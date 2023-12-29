@@ -1,0 +1,10 @@
+{
+    "files.autoGuessEncoding": true,
+    "[kod]": {
+        "files.encoding" : "windows1252"
+    },
+    "files.exclude": {
+        "**/*.bof": { "when": "$(basename).kod"},
+        "**/*.rsc": { "when": "$(basename).kod"}
+    }
+}

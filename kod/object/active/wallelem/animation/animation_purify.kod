@@ -1,0 +1,31 @@
+// Meridian 59, Copyright 1994-2012 Andrew Kirmse and Chris Kirmse.
+// All rights reserved.
+//
+// This software is distributed under a license that is described in
+// the LICENSE file that accompanies it.
+//
+// Meridian is a registered trademark.
+
+
+////////////////////////////////////////////////////////////////////////////////
+PurifyAnimation is PostAnimation
+
+constants:
+
+   include blakston.khd
+
+resources:
+
+   purify_res = animation_purify.bgf
+
+classvars:
+
+   vrIcon = purify_res
+   viLightColor = LIGHT_YELLOW
+
+properties:
+
+messages:
+
+end
+////////////////////////////////////////////////////////////////////////////////

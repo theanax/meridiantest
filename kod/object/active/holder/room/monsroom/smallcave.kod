@@ -1,0 +1,92 @@
+// Meridian 59, Copyright 1994-2012 Andrew Kirmse and Chris Kirmse.
+// All rights reserved.
+//
+// This software is distributed under a license that is described in
+// the LICENSE file that accompanies it.
+//
+// Meridian is a registered trademark.
+
+
+////////////////////////////////////////////////////////////////////////////////
+ SmallCave is MonsterRoom
+
+constants:
+
+   include blakston.khd
+
+resources:
+
+   include smallcave.lkod
+
+   room_smallcave = smallcave.roo
+   room_name_smallcave ="A small dark stinky cave."
+   smallcave_music = walk1.ogg
+   smallcave_msg1 = "Today does not seem like a particularly good day to be in there."
+
+classvars:
+
+   vrName = room_name_smallcave
+
+   viTeleport_row = 8
+   viTeleport_col = 8
+
+   viTerrain_type = TERRAIN_MOUNTAIN
+
+   viFlag_row = 13
+   viFlag_col = 15
+
+
+properties:
+
+   prRoom = room_smallcave
+   piRoom_num = RID_SMALLCAVE
+
+   piBaseLight = LIGHT_MIN
+   piOutside_factor = 0
+
+   piGen_time = 25000
+   piGen_percent = 80
+
+   piInit_count_min = 7
+   piInit_count_max = 9
+
+   piMonster_count_max = 35
+
+   prMusic = orccave2_music
+
+
+messages:
+
+   CreateStandardExits()
+   {
+      plExits = $;
+
+  /// TO TOWN
+
+      plEdge_Exits = $;
+
+      plEdge_Exits = Cons([LEAVE_WEST, RID_I6, 6, 47, ROTATE_NONE], plEdge_exits);
+
+      propagate;
+   }
+
+   Constructed()
+   {
+      plMonsters = [ [&Centipede, 70], [&Slime, 30]  ];
+
+      propagate;
+   }
+
+   SetMonsterGenPoints()
+   {
+      plGenerators = [ [5, 3], [5, 2], [11, 12], [7, 3],
+                       [7, 2], [11, 6], [22, 4], [17, 11],
+		       [18, 4], [18, 8], [19, 17] ];
+
+      return;
+   }
+
+
+end
+////////////////////////////////////////////////////////////////////////////////
+

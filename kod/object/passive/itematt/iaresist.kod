@@ -1,0 +1,73 @@
+// Meridian 59, Copyright 1994-2012 Andrew Kirmse and Chris Kirmse.
+// All rights reserved.
+//
+// This software is distributed under a license that is described in
+// the LICENSE file that accompanies it.
+//
+// Meridian is a registered trademark.
+
+
+////////////////////////////////////////////////////////////////////////////////
+ItemAttResist is ItemAttribute
+
+constants:
+
+   include blakston.khd
+
+resources:
+
+   include iaresist.lkod
+
+   resist_info_desc = "%i%% magic resistance\n"
+
+classvars:
+
+   viItem_Att_Num = IA_RESIST
+
+   vrInfoDesc = resist_info_desc
+
+properties:
+
+messages:
+
+   AppendDescInfo(oItem=$,compound=$,bShowAll=FALSE)
+   {
+      local iBonus;
+
+      if bShowAll
+         OR Send(oItem,@GetIDStatusFromCompound,#compound=compound)
+      {
+         iBonus = Send(self,@TranslatePowerFromCompound,#iCompound=compound);
+         AddPacket(4,vrInfoDesc, 4,iBonus);
+      }
+      else
+      {
+         AddPacket(4,system_blank_resource);
+      }
+
+      return;
+   }
+
+   InitialPower(oItem=$,diff_seed=1)
+   {
+      local i;
+
+      i = Random(1,100);
+      if i < 80
+      {
+         return 1;
+      }
+      else if i < 99
+      {  
+         return 2;
+      }
+      return 3;
+   }
+
+   IsMagicalEffect()
+   {
+      return TRUE;
+   }
+
+end
+////////////////////////////////////////////////////////////////////////////////

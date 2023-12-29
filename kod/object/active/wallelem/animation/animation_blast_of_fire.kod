@@ -1,0 +1,31 @@
+// Meridian 59, Copyright 1994-2012 Andrew Kirmse and Chris Kirmse.
+// All rights reserved.
+//
+// This software is distributed under a license that is described in
+// the LICENSE file that accompanies it.
+//
+// Meridian is a registered trademark.
+
+
+////////////////////////////////////////////////////////////////////////////////
+BlastOfFireAnimation is PostAnimation
+
+constants:
+
+   include blakston.khd
+
+resources:
+
+   burst_of_flame_res = animation_blast_of_fire.bgf
+
+classvars:
+
+   vrIcon = burst_of_flame_res
+   viLightColor = LIGHT_FIRE
+
+properties:
+
+messages:
+
+end
+////////////////////////////////////////////////////////////////////////////////

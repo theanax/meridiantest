@@ -1,0 +1,86 @@
+// Meridian 59, Copyright 1994-2012 Andrew Kirmse and Chris Kirmse.
+// All rights reserved.
+//
+// This software is distributed under a license that is described in
+// the LICENSE file that accompanies it.
+//
+// Meridian is a registered trademark.
+
+
+//////////////////////////////////////////////////////////////////////////////////
+TosTavern is MonsterRoom
+
+constants:
+
+   include blakston.khd
+
+resources:
+
+   include tostavern.lkod
+
+   room_TosTavern = tostavern.roo
+   room_name_TosTavern = "Abandoned Fountain Tavern"
+   TosTavern_music = tos.ogg
+   
+classvars:
+
+   vrName = room_name_TosTavern
+
+   viTerrain_type = TERRAIN_CITY | TERRAIN_RESIDENCE
+
+properties:
+   
+   prRoom = room_TosTavern
+   piRoom_num = RID_TOS_OLD_TAVERN
+   prMusic = TosTavern_music
+
+   viTeleport_Row = 6
+   viTeleport_Col = 4
+
+   piBaseLight = LIGHT_NICE
+   piOutside_factor = 0
+
+messages:
+
+   CreateStandardExits()
+   {
+      plExits = $;
+
+      // exits back to tos
+
+      plExits = Cons([ 9, 7, RID_TOS, 51, 12, ROTATE_NONE ],plExits);
+
+      plExits = Cons([ 6, 12, RID_TOS_SECRET_PASSAGE, 4, 2, ROTATE_NONE ],plExits);
+
+      propagate;
+   }
+
+   Constructed()
+   {
+      plMonsters = [ [&Zombie, 85], [&Skeleton, 15] ];
+
+      propagate;
+   }
+
+   SetMonsterGenPoints()
+   {
+      plGenerators = [ [4, 11], [6, 1], [6, 7] ];
+
+      return;
+   }
+
+   TryCreateMonster(initroom = FALSE,loadfirst = FALSE)
+   {
+      local iHour;
+
+      iHour = Send(SYS,@GetHour);
+      if iHour < 5 OR iHour > 21
+      {
+         propagate;
+      }
+
+      return FALSE;
+   }
+
+end
+////////////////////////////////////////////////////////////////////////////////

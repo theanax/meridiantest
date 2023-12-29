@@ -1,0 +1,19 @@
+transference_name_rsc = de "Transfer"
+transference_desc_rsc = de \
+   "Sendet ausgewählte Reagenzien in dein Lager.\nBenötigt "
+   "nur ein paar Schillinge als Gebühr."
+transference_cant = de "Du kannst Transfer nicht auf %s%s zaubern."
+transference_no_hall = de "Transfer funktioniert nur, wenn du eine Halle "
+   "besitzt!"
+transference_not_enough_cash = de \
+   "Du hast nicht genügend Schillinge, um %s%s in deine Halle zu transferieren!"
+transference_not_enough_space = de \
+   "Es ist nicht genügend Platz in deiner Halle vorhanden!"
+transference_not_guilded = de \
+   "Du musst in einer Gilde sein, um Transfer zu nutzen!"
+transference_not_holding = de \
+   "Du kannst Transfer nicht auf einen Gegenstand zaubern, den du in der "
+   "Hand hälst!"
+transference_cast = de \
+   "Plötzlich erscheint ein kleines Portal, und du transportierst %s%s in "
+   "deine Halle."

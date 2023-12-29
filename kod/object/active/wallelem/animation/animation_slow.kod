@@ -1,0 +1,31 @@
+// Meridian 59, Copyright 1994-2012 Andrew Kirmse and Chris Kirmse.
+// All rights reserved.
+//
+// This software is distributed under a license that is described in
+// the LICENSE file that accompanies it.
+//
+// Meridian is a registered trademark.
+
+
+////////////////////////////////////////////////////////////////////////////////
+SlowAnimation is PostAnimation
+
+constants:
+
+   include blakston.khd
+
+resources:
+
+   slow_res = animation_slow.bgf
+
+classvars:
+
+   vrIcon = slow_res
+   viLightColor = LIGHT_DARK
+
+properties:
+
+messages:
+
+end
+////////////////////////////////////////////////////////////////////////////////

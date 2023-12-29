@@ -1,0 +1,46 @@
+// Meridian 59, Copyright 1994-2012 Andrew Kirmse and Chris Kirmse.
+// All rights reserved.
+//
+// This software is distributed under a license that is described in
+// the LICENSE file that accompanies it.
+//
+// Meridian is a registered trademark.
+
+
+////////////////////////////////////////////////////////////////////////////////
+YetiTreasure is TreasureType
+
+constants:
+
+   include blakston.khd
+
+classvars:
+
+   viTreasure_num = TID_YETI
+
+properties:
+
+   piItem_att_chance = 70
+   piDIff_seed = 9
+
+messages:
+
+   Constructed()
+   {
+      plTreasure = [ [ &IvyCirclet, 19],
+                     [ &ShortSword, 14 ],
+                     [ &Sapphire, 12 ],
+                     [ &Diamond, 9 ],
+                     [ &Ruby, 7 ],
+                     [ &SimpleHelm, 17],
+                     [ &Gauntlet, 15],
+                     [ &Scimitar, 1],
+                     [ &Mace, 3 ],
+                     [ &PlateArmor, 3 ]
+                   ];
+
+      propagate;
+   }
+
+end
+////////////////////////////////////////////////////////////////////////////////

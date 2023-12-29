@@ -1,0 +1,31 @@
+// Meridian 59, Copyright 1994-2012 Andrew Kirmse and Chris Kirmse.
+// All rights reserved.
+//
+// This software is distributed under a license that is described in
+// the LICENSE file that accompanies it.
+//
+// Meridian is a registered trademark.
+
+
+////////////////////////////////////////////////////////////////////////////////
+PurgeAnimation is PostAnimation
+
+constants:
+
+   include blakston.khd
+
+resources:
+
+   purge_res = animation_purge.bgf
+
+classvars:
+
+   vrIcon = purge_res
+   viLightColor = LIGHT_YELLOW
+
+properties:
+
+messages:
+
+end
+////////////////////////////////////////////////////////////////////////////////

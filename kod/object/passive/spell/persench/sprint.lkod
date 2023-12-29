@@ -1,0 +1,11 @@
+   Sprint_name_rsc = "sprint"
+   Sprint_icon_rsc = brawlico.bgf
+   Sprint_desc_rsc = \
+      "Allows an agile and enduring warrior to run significantly faster at the "
+      "cost of becoming winded at an accelerated rate."
+      "\n\nNOTE: This is an actively held skill, which requires you to create and "
+      "hold down a hotkey."
+
+   Sprint_start = "You begin to sprint!"
+   Sprint_end = "You stop sprinting."
+   Sprint_exhaust = "You are too exhausted to sprint!" 

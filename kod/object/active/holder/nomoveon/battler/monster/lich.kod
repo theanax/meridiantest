@@ -1,0 +1,520 @@
+// Meridian 59, Copyright 1994-2012 Andrew Kirmse and Chris Kirmse.
+// All rights reserved.
+//
+// This software is distributed under a license that is described in
+// the LICENSE file that accompanies it.
+//
+// Meridian is a registered trademark.
+
+
+////////////////////////////////////////////////////////////////////////////////
+Lich is Monster
+
+constants:
+
+   include blakston.khd
+   include protocol.khd
+
+   LICH_ILLUSION_TIME = 5 * 60 * 1000  // five minutes
+   MAGIC_RESIST = 80
+
+resources:
+
+   include lich.lkod
+
+   lich_pretty_name_rsc = "Queen Venya'cyr"
+   lich_pretty_icon_rsc = licha.bgf
+   lich_pretty_desc_rsc = \
+      "A noble woman of stunning beauty, Queen Venya'cyr carries herself with "
+      "a refined demeanor hardly still seen in this day and age.  You can't "
+      "help but marvel at how she has managed to keep her beautiful face so "
+      "young and vibrant through all of these centuries."
+   lich_name_rsc = "Queen Venya'cyr"
+   lich_icon_rsc = lichb.bgf
+   lich_desc_rsc = \
+      "Through some dark pact made ages ago, Queen Venya'cyr's ghastly corpse "
+      "has been kept alive by dark magicks.  Sheer power emanates forcibly "
+      "from her eyes, an intense gaze which strikes fear into your heart.  "
+      "The centuries have apparently taken their toll on her physical form, "
+      "however, as her skin is a mess of rotting flesh writhing with worms.  "
+
+   lich_dispel = \
+      "The foul lich queen's ghastly appearance is revealed for all to see!"
+   lich_respel = \
+      "The lich queen's ghastly appearance is once more cloaked in illusion."
+
+   lich_dead_icon_rsc = lichbx.bgf
+   lich_dead_name_rsc = "The ghost of Queen Venya'cyr"
+
+   lich_sound_miss = lich_atk.ogg
+   lich_sound_death = lich_dth.ogg
+   lich_sound_aware = lich_awr.ogg
+
+   lich_cast_sound = necro01.ogg
+
+   lich_blank = ""
+   lich_comma = ", "
+   lich_and = " and "
+   lich_has = "has"
+   lich_have = "have"
+   lich_killed_world_saved = \
+      "~B%s has struck down the Dark Queen Venya'cyr, ridding Meridian of "
+      "the evil Order of Necromancers!\nThanks to %q%s%q, the good citizens "
+      "of Meridian can walk the land in safety once again, knowing that "
+      "%q%s%q %s perished along with the undead queen."
+
+   lich_spit = lightnin.bgf
+
+   lich_spawn_rsc = "Queen Venya'cyr has been spotted with her soldiers on the Great Ocean! "
+      "To arms! Gather your forces and stand against the invasion before it's too late..."
+   lich_killed_rsc = "Queen Venya'cyr has been killed! The good citizens "
+      "of Meridian can walk the land in safety once again."
+
+   lich_darkbolt = gob_low.bgf
+
+classvars:
+
+   vrName = lich_pretty_name_rsc
+   vrIcon = lich_pretty_icon_rsc
+   vrDesc = lich_pretty_desc_rsc
+   vrName2 = lich_name_rsc
+   vrIcon2 = lich_icon_rsc
+   vrDesc2 = lich_desc_rsc
+   vrDead_icon = lich_dead_icon_rsc
+   vrDead_name = lich_dead_name_rsc
+   viDefinite = ARTICLE_NONE
+   viIndefinite = ARTICLE_NONE
+   viGender = GENDER_FEMALE
+
+   viTreasure_type = TID_LICH
+   viSpeed = SPEED_FAST
+   viSpell_type = SPL_TYPE_UNHOLY
+   viLevel = 300
+   viDifficulty = 10
+   viVisionDistance = 1000
+   viMeleeRange = 128
+   viFireRange = 1000
+   vbSpin = TRUE
+   viSpinAnimationTime = 200
+   viKarma = -100
+   vbIsUndead = TRUE
+   viDefault_behavior = \
+      AI_FIGHT_AGGRESSIVE | AI_FIGHT_HYPERAGGRESSIVE \
+      | AI_MOVE_FLEE_FRIGHTENERS | AI_FIGHT_THROUGH_WALLS | AI_FIGHT_SWITCHALOT
+
+   vrSound_miss = lich_sound_miss
+   vrSound_aware = lich_sound_aware
+   vrSound_death = lich_sound_death
+
+   viPoisonChance = 5
+   viPoisonStrength = 1000
+   viPoisonDuration = 3600000
+   viPoisonHealth = 100
+   viPoisonVigor = 20
+   viBleedChance = 20
+   viBleedStrength = 4000
+   viBleedDuration = 4000
+   viMovePriority = 300
+   viPowerLevel = 200
+
+   vbCanPoison = FALSE
+   vbCanBleed = FALSE
+
+   viNightVision = 255
+
+properties:
+
+   piAnimation = ANIM_NONE
+   plAttackers = $
+
+   pbIllusioned = TRUE
+   ptGoIllusioned = $
+
+   piReputationGroup = REP_LICH
+
+   plTreasure = $
+
+messages:
+
+   Constructed()
+   {
+      local iCharmDropRate;
+
+      piMax_Health = piMax_Health * 2;
+      piHealth = piMax_Health * 100;
+
+      plActions =  [ [SID_VAMPIRIC_DRAIN,100,0,65536,0,200,99,COMBAT_ACTION_HARM],
+                     [SID_HOLD,100,0,16384,0,600,99,COMBAT_ACTION_HARM],
+                     [SID_BLIND,500,0,MAX_KOD_INT,0,1200,99,COMBAT_ACTION_HARM],
+                     [SID_CURSE_WEAPON,200,0,16384,0,600,99,COMBAT_ACTION_HARM],
+                     [SID_DARKNESS,0,0,MAX_KOD_INT,1000,0,99,COMBAT_ACTION_NEUTRAL] ];
+      
+      plReputationEnemies = [REP_FAROL];
+
+      plResistances = [ [-SPL_TYPE_ALL, 60],
+                        [ATK_TYPE_ALL, 60],
+                        [ATK_TYPE_NERUDITE, -20 ],
+                        [ATK_TYPE_BLUDGEON, -20 ],
+                        [ATK_TYPE_SILVER, -60 ],
+                        [-SPL_TYPE_COLD, 90],
+                        [-SPL_TYPE_UNHOLY, 90 ],
+                        [-SPL_TYPE_ACID, 30 ],
+                        [-SPL_TYPE_SHOCK, -20],
+                        [-SPL_TYPE_FIRE, -20 ],
+                        [-SPL_TYPE_HOLY, -40 ],
+                        [-SPL_TYPE_HUNTERSWORD, -90 ]
+                      ];
+                     
+      iCharmDropRate = Send(SETTINGS_OBJECT,@GetLichCharmDropRate);
+      plTreasure = [ [ &LeatherArmor,  30 ],
+                     [ &ChainArmor,    25 ],
+                     [ &ScaleArmor,    20 ],
+                     [ &PlateArmor,    15 ],
+                     [ &OrcShield,     10 ],
+                     [ &GuildShield,   10 ],
+                     [ &Circlet,       30 ],
+                     [ &IvyCirclet,    20 ],
+                     [ &Scimitar,      25 ],
+                     [ &MysticSword,   20 ],
+                     [ &FarenCharm,    iCharmDropRate ],
+                     [ &KraananCharm,  iCharmDropRate ],
+                     [ &QorCharm,      iCharmDropRate ],
+                     [ &RiijaCharm,    iCharmDropRate ],
+                     [ &ShalilleCharm, iCharmDropRate ]
+                   ];
+
+      Broadcast(lich_spawn_rsc);
+
+      propagate;
+   }
+
+   AssessDamage(what=$,damage=$,atype=0,stype=0,bonus=0)
+   {
+      if (NOT FindListElem(plAttackers,what))
+      {
+         plAttackers = Cons(what,plAttackers);
+      }
+
+      propagate;
+   }
+
+   CanMorphTo()
+   {
+      return FALSE;
+   }
+
+   CanEvilTwin()
+   {
+      return FALSE;
+   }
+
+   CanBeWebbed()
+   {
+      return FALSE;
+   }
+   
+   CreateTreasure(who=$,corpse=$)
+   {
+      local i, oType, iChance, oItem, iCount, iMax, iNum;
+
+      iCount = 0;
+      iMax = Send(SETTINGS_OBJECT,@GetLichItemDropCount);
+      
+      while iCount < iMax
+      {
+         foreach i in plTreasure
+         {
+            oType = Nth(i,1); 
+            iChance = Nth(i,2);
+            iNum = 0;
+
+            if Random(1,100) <= iChance
+            {   
+               oItem = Create(oType);
+               
+               if IsClass(oItem,&DefenseModifier)
+                  OR IsClass(oItem,&Necklace)
+               {
+                  iNum = IA_RESIST;
+               }
+               else if IsClass(oItem,&Weapon)
+               {
+                  if Random(1,100) <= 33
+                  {
+                     iNum = WA_BLINDER;
+                  }
+                  if Random(1,100) <= 33
+                  {
+                     iNum = WA_PARALYZER;
+                  }
+                  if Random(1,100) <= 33
+                  {
+                     iNum = WA_PURGER;
+                  }
+               }
+
+               Send(self,@CreateTreasureBonus,#what=oItem,#itemAttNum=iNum);
+               Send(self,@CreateTreasureDrop,#what=oItem,#corpse=corpse);
+               ++iCount;
+            }
+         }
+      }
+
+      propagate;
+   }
+
+   CreateTreasureBonus(what=$,itemAttNum=0,corpse=$)
+   {
+      local oAttr;
+
+      if itemAttNum > 0
+      {
+         oAttr = Send(SYS,@FindItemAttByNum,#num=itemAttNum);
+         if oAttr <> $
+         AND Send(oAttr,@ReqAddToItem,#oItem=what)
+         {
+            Send(oAttr,@AddToItem,#oItem=what,#state1=corpse);
+         }
+      }
+
+      return;
+   }
+
+   CreateTreasureDrop(what=$)
+   {
+      if Send(poOwner,@ReqNewHold,
+            #what=what,
+            #new_row=piRow,
+            #new_col=piCol)
+      {
+         Send(poOwner,@NewHold,
+            #what=what,
+            #new_row=piRow,
+            #new_col=piCol,
+            #fine_row=piFine_row,
+            #fine_col=piFine_col);
+      }
+      else
+      {
+         Send(what,@Delete);
+      }
+
+      return;
+   }
+
+   Delete()
+   {
+      plAttackers = $;
+
+      if ptGoIllusioned <> $
+      {
+         DeleteTimer(ptGoIllusioned);
+         ptGoIllusioned = $;
+      }
+
+      propagate;
+   }
+
+   DispelIllusionEnchantments()
+   {
+      if NOT pbIllusioned
+      {
+         return;
+      }
+
+      Post(poOwner,@SomeoneSaid,#what=self,#string=lich_dispel,#type=SAY_MESSAGE);
+      pbIllusioned = FALSE;
+      Send(poOwner,@SomethingChanged,#what=self);
+
+      if ptGoIllusioned <> $
+      {
+         DeleteTimer(ptGoIllusioned);
+         ptGoIllusioned = $;
+      }
+
+      ptGoIllusioned = CreateTimer(self,@ReplaceIllusions,LICH_ILLUSION_TIME);
+
+      return;
+   }
+
+   GetApparentName()
+   {
+      if pbIllusioned
+      {
+         return vrName;
+      }
+
+      return vrName2;
+   }
+   
+   GetIcon()
+   {
+      if pbIllusioned
+      {
+         return vrIcon;
+      }
+
+      return vrIcon2;
+   }
+
+   GetName()
+   {
+      if pbIllusioned
+      {
+         return vrName;
+      }
+
+      return vrName2;
+   }
+   
+   GetProjectileIcon()
+   {
+      return lich_darkbolt;
+   }
+   
+   GetProjectileLightFlags()
+   {
+      return LIGHT_FLAG_NONE;
+   }
+
+   GetProjectileSpeed()
+   {
+      return 14;
+   }
+
+   IsArenaMonster()
+   {
+      return FALSE;
+   }
+
+   Killed(what=$,resetScenario=FALSE,guildDisbandDeath=FALSE)
+   {
+      local i, iBonusTP, iBonusHP;
+
+      iBonusHP = Send(SETTINGS_OBJECT,@GetLichBonusHonorPoints);
+      iBonusTP = Send(SETTINGS_OBJECT,@GetLichBonusTrainingPoints);
+
+      foreach i in plAttackers
+      {
+         if IsClass(i,&Player)
+         {
+            Send(i,@AddTrainingPoints,#points=iBonusTP,#bCap=FALSE);
+            Send(i,@AddHonorPoints,#who=i,#honor=iBonusHP);
+         }
+      }
+
+      Broadcast(lich_killed_rsc);
+      
+      propagate;
+   }
+
+   NecroMancerRosterReply(oNecro=$)
+   {
+      return;
+   }
+
+   ReplaceIllusions()
+   {
+      ptGoIllusioned = $;
+
+      if pbIllusioned
+      {
+         return;
+      }
+
+      Post(poOwner,@SomeoneSaid,#what=self,#string=lich_respel,#type=SAY_MESSAGE);
+      pbIllusioned = TRUE;
+      Send(poOwner,@SomethingChanged,#what=self);
+
+      return;
+   }
+
+   SendProjectileAnimation()
+   {
+      AddPacket(1,ANIMATE_TRANSLATION, 1,PT_GRAY_TO_BLACK);
+      AddPacket(1,ANIMATE_CYCLE, 4,40, 2,1, 2,5);
+
+      return;
+   }
+
+   ShowDesc()
+   {
+      if pbIllusioned
+      {
+         AddPacket(4,vrDesc);
+
+         return;
+      }
+
+      AddPacket(4,vrDesc2);
+
+      return;
+   }
+ 
+   SomethingMoved()
+   {
+      if poOwner <> $
+      {
+         Send(poOwner,@DeleteWallsAroundBattler,#who=self);
+      }
+
+      propagate;
+   }
+
+   SendAnimation()
+   {
+      if piAnimation = ANIM_ATTACK
+      {
+         AddPacket(1,ANIMATE_ONCE, 4,150, 2,6, 2,9, 2,1);
+
+         return;
+      }
+
+      propagate;
+   }
+
+   SendLookAnimation()
+   {
+      AddPacket(1,ANIMATE_CYCLE, 4,200, 2,2, 2,3);
+
+      return;
+   }
+
+   SendMoveAnimation()
+   {
+      AddPacket(1,ANIMATE_CYCLE, 4,80, 2,2, 2,5);
+
+      return;
+   }
+
+   SpellResist(oSpell=$,who=$,iSpellpower=$)
+   {
+      local iResistChance;
+
+      if IsClass(who,&DM)
+      {
+         return FALSE;
+      }
+
+      if Send(oSpell,@IsHarmful)
+      {
+         iResistChance = MAGIC_RESIST;
+         if IsClass(oSpell,&Dazzle)
+            OR IsClass(oSpell,&Blind)
+            OR IsClass(oSpell,&Hold)
+         {
+            iResistChance = 100;
+         }
+
+         if iSpellPower < 40
+            OR Random(0,100) < iResistChance
+         {
+            return TRUE;
+         }
+      }
+
+      return FALSE;
+   }
+
+end
+////////////////////////////////////////////////////////////////////////////////

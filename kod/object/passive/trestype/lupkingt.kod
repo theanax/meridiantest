@@ -1,0 +1,44 @@
+// Meridian 59, Copyright 1994-2012 Andrew Kirmse and Chris Kirmse.
+// All rights reserved.
+//
+// This software is distributed under a license that is described in
+// the LICENSE file that accompanies it.
+//
+// Meridian is a registered trademark.
+
+
+////////////////////////////////////////////////////////////////////////////////
+LupoggKingTreasure is TreasureType
+
+constants:
+
+   include blakston.khd
+
+classvars:
+
+   viTreasure_num = TID_LUPOGG_KING
+
+properties:
+
+   piItem_att_chance = 70
+   piDiff_seed = 10
+
+messages:
+
+   Constructed()
+   {
+      plTreasure = [ [ &PlateArmor, 12 ],
+                     [ &ScaleArmor, 20 ],
+                     [ &OrcShield, 15 ],                     
+                     [ &SimpleHelm, 15 ],
+                     [ &MysticSword, 10 ],
+                     [ &FineLute, 6 ],
+                     [ &IvyCirclet, 2 ],
+                     [ &JalaNecklace, 20 ]
+                   ];
+
+      propagate;
+   }
+
+end
+////////////////////////////////////////////////////////////////////////////////

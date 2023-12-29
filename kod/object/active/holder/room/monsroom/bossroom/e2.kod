@@ -1,0 +1,120 @@
+// Meridian 59, Copyright 1994-2012 Andrew Kirmse and Chris Kirmse.
+// All rights reserved.
+//
+// This software is distributed under a license that is described in
+// the LICENSE file that accompanies it.
+//
+// Meridian is a registered trademark.
+
+
+////////////////////////////////////////////////////////////////////////////////
+OutdoorsE2 is BossRoom
+
+constants:
+
+   include blakston.khd
+
+resources:
+
+   include e2.lkod
+
+   room_name_OutdoorsE2 = "The Great Ocean"
+   room_OutdoorsE2 = e2.roo
+   OutdoorsE2_music = fight.ogg
+
+   E2_oceanwalk = \
+      "You decide you don't like saltwater enough to go swimming "
+      "in the Great Ocean."
+   E2_icewalk = "The ice looks a bit too thin to risk going any farther out."
+
+classvars:
+
+   vrName = room_name_OutdoorsE2
+
+   viTeleport_row = 19
+   viTeleport_col = 32
+
+   viTerrain_type = TERRAIN_NECROPOLIS | TERRAIN_LAIR
+
+   viFlag_row = 63
+   viFlag_col = 5
+
+   viWeatherZone = WEATHER_ZONE_CV
+
+   viBossResetTime = 1000 * 60 * 60 * 6 // 6 hours
+
+properties:
+
+   prRoom = room_OutdoorsE2
+   prMusic = OutdoorsE2_music
+   piRoom_num = RID_E2
+
+   piBaseLight = LIGHT_VERY_DARK
+   piOutside_factor = 0
+
+   piDirectional_percent = DIRECTIONAL_PERCENT_OUTDOORS
+
+   piGen_time = 10000
+   piGen_percent = 100
+
+   piInit_count_min = 10
+   piInit_count_max = 15
+
+   piMonster_count_max = 15
+
+   pbRespawnMonsters = TRUE
+
+messages:
+
+   Constructor()
+   {
+      plMonsters = [ [&Necromancer, 50], [&DarkAngel, 25], [&Ghost, 25] ];
+
+      propagate;
+   }
+
+   CreateStandardExits()
+   {
+      plEdge_Exits = $;
+      plEdge_Exits = Cons([LEAVE_EAST, RID_F2, 21, 3, ROTATE_NONE], plEdge_exits);
+      plEdge_Exits = Cons([LEAVE_SOUTH, RID_D4, 1, 23, ROTATE_NONE], plEdge_exits);
+
+      propagate;
+   }
+   
+   SetupBossTemplates()
+   {
+      plBossTemplate = [ 
+         [&Lich,        viTeleport_row, viTeleport_col] 
+      ];
+
+      plHenchmenTemplate = [ 
+         [&Ghost,       viTeleport_row + 1, viTeleport_col + 1], 
+         [&Ghost,       viTeleport_row - 1, viTeleport_col - 1],
+         [&DarkAngel,   viTeleport_row + 2, viTeleport_col + 2], 
+         [&DarkAngel,   viTeleport_row - 2, viTeleport_col - 2], 
+         [&Necromancer, viTeleport_row + 3, viTeleport_col + 3], 
+         [&Necromancer, viTeleport_row - 4, viTeleport_col - 4] 
+      ];
+
+      return;
+   }
+
+   SetMonsterGenPoints()
+   {
+      plGenerators = [ 
+         [viTeleport_row - 4, viTeleport_col - 4], 
+         [viTeleport_row - 2, viTeleport_col - 2], 
+         [viTeleport_row + 2, viTeleport_col + 2], 
+         [viTeleport_row + 4, viTeleport_col + 4], 
+         [viTeleport_row + 2, viTeleport_col - 2], 
+         [viTeleport_row - 2, viTeleport_col + 2], 
+         [viTeleport_row + 4, viTeleport_col - 4], 
+         [viTeleport_row - 4, viTeleport_col + 4]
+      ];
+
+      return;
+   }
+
+end
+////////////////////////////////////////////////////////////////////////////////

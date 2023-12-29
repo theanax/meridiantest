@@ -1,0 +1,11 @@
+room_name_OutdoorsE2 = de "Das große Meer"
+E2_oceanwalk = de \
+   "Du beschließt, im großen Meer besser nicht schwimmen zu gehen."
+E2_icewalk = de \
+   "Das Eis sieht zu dünn aus, als das du dich traust weiter raus zu gehen..."
+boss_spawn_rsc = de \
+   "Queen Venya'cyr wurde mit ihren Soldaten am großen Ozean gesichtet! "
+   "Zu den Waffen! Sammelt euch und stellt euch gegen die Invasion, bevor es zu spät ist..."
+boss_killed_rsc = de \
+   "Queen Venya'cyr wurde getötet! Die guten Bürger von Meridian "
+   "können wieder sicher durch das Land ziehen."
